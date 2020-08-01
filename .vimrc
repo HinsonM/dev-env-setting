@@ -8,6 +8,14 @@ let mapleader=";"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" 如果未安装则自动安装vim-plug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 "补全框架
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -27,6 +35,8 @@ Plug 'Lokaltog/vim-powerline'
 Plug 'derekwyatt/vim-fswitch'
 "基于标签将标识符分类显示于左侧
 Plug 'majutsushi/tagbar'
+"vim-go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
