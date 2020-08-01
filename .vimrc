@@ -1,9 +1,39 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" shortcuts
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " map keys to switch between tabs with :tabn and :tabp.
-let mapleader=";"
+let mapleader=","
 :map <F7> :tabn<CR>				
 :map <F8> :tabp<CR>
+
+"NERDTree 快捷键
+map <leader>t :NERDTree<CR>
+
 " wa保存所有文件,make编译项目,cw显示编译器抛出的错误和警告信息quickfix
-:nmap <Leader>b :wa<CR>:make<CR><CR>:cw<CR>
+":nmap <Leader>b :wa<CR>:make<CR><CR>:cw<CR>
+
+" 插件配套快捷键
+"头文件与源文件快速切换,使用插件'derekwyatt/vim-fswitch'
+nmap <silent> <F2> :FSHere<cr>
+
+" vim-go quickfix list 之间的跳转
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug
@@ -38,10 +68,6 @@ Plug 'majutsushi/tagbar'
 "vim-go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"头文件与源文件快速切换
-nmap <silent> <F2> :FSHere<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-powerline setting
@@ -147,7 +173,8 @@ autocmd BufWritePost $MYVIMRC source $MYVIMRC
 2mat ErrorMsg '\%80v.' " check if #(cols) > 80
 "noremap % v% " visully select whenever jump
 " visually select text whenever type % to jump to matching object
-"set mouse = a " enable mouse
+set mouse=a " enable mouse
+set autowrite " 在执行':make'时自动保存文件 
 setlocal noswapfile " 不要生成swap文件
 set bufhidden=hide " 当buffer被丢弃的时候隐藏它
 set nocompatible " 关闭 vi 兼容模式
