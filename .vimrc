@@ -6,10 +6,16 @@ let mapleader=","
 :map <F7> :tabn<CR>				
 :map <F8> :tabp<CR>
 
-"NERDTree 快捷键
-map <leader>t :NERDTree<CR>
+"从vim中复制内容到终端外
+map <leader>y "+y<CR>
 
-" wa保存所有文件,make编译项目,cw显示编译器抛出的错误和警告信息quickfix
+"NERDTree 快捷键
+map <leader>nt :NERDTree<CR>
+
+" CtrlSF 快捷键 调用全局搜索命令
+map <leader>f :CtrlSF<space>
+
+"wa保存所有文件,make编译项目,cw显示编译器抛出的错误和警告信息quickfix
 ":nmap <Leader>b :wa<CR>:make<CR><CR>:cw<CR>
 
 " 插件配套快捷键
@@ -48,6 +54,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 "补全框架
+"Plug 'ycm-core/YouCompleteMe'
+"补全框架
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "树状文件浏览器
 Plug 'preservim/nerdtree'
@@ -56,7 +64,7 @@ Plug 'ludovicchabant/vim-gutentags'
 "动态检查
 Plug 'dense-analysis/ale'
 "solarized主题
-Plug 'altercation/vim-colors-solarized'
+"Plug 'altercation/vim-colors-solarized'
 "cpp补充关键字语法高亮
 Plug 'octol/vim-cpp-enhanced-highlight'
 "美化状态栏
@@ -67,11 +75,21 @@ Plug 'derekwyatt/vim-fswitch'
 Plug 'majutsushi/tagbar'
 "vim-go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+"全局搜索，显示结果包括匹配内容的上下文
+Plug 'dyng/ctrlsf.vim'
+"自动补全括号
+Plug 'jiangmiao/auto-pairs'
+"一键注释所有文档
+Plug 'preservim/nerdcommenter'
+"dash
+"Plug 'rizzatti/dash.vim'
+"平滑滚动
+Plug 'yuttie/comfortable-motion.vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-powerline setting
-let g:Powerline_colorscheme='solarized256'
+"let g:Powerline_colorscheme='solarized256'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-ale setting
@@ -101,7 +119,7 @@ hi! SpellRare gui=undercurl guisp=magenta
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-gutentags global setting
 " gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
- let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+ let g:gutentags_project_root = ['.root']  "['.root', '.svn', '.git', '.hg', '.project']
 
 " 所生成的数据文件的名称
 let g:gutentags_ctags_tagfile = '.tags'
@@ -124,7 +142,8 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "基于标签将标识符分类显示于左侧
 " 设置 tagbar 子窗口的位置出现在主编辑区的左边
-let tagbar_left=1
+"let tagbar_left=1
+let tagbar_right=1
 " 设置显示／隐藏标签列表子窗口的快捷键。速记：identifier list by tag
 nnoremap <Leader>ilt :TagbarToggle<CR>
 " 设置标签子窗口的宽度
@@ -166,6 +185,13 @@ let g:tagbar_type_cpp = {
      \ }
 \ }
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+"comfortable-motion.vim
+noremap <silent> <ScrollWheelDown> :call comfortable_motion#flick(6)<CR>
+noremap <silent> <ScrollWheelUp>   :call comfortable_motion#flick(-6)<CR>
+
+
 " 保存.vimrc配置变更立即生效
 autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
@@ -179,7 +205,7 @@ setlocal noswapfile " 不要生成swap文件
 set bufhidden=hide " 当buffer被丢弃的时候隐藏它
 set nocompatible " 关闭 vi 兼容模式
 syntax enable " 开启语法高亮功能
-syntax on " 允许用指定的语法高亮配色方案替代默认方案
+"syntax on " 允许用指定的语法高亮配色方案替代默认方案
 set background=dark
 "colorscheme solarized " 设定配色方案
 colorscheme molokai 
@@ -221,4 +247,3 @@ setlocal foldlevel=1 " 设置折叠层数为 1
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR> " 用空格键来开关折叠
 
 "let g:SuperTabRetainCompletionType = 2
-"let g:SuperTabDefaultCompletionType = "<C-X><C-O>" 
